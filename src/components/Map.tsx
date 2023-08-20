@@ -5,9 +5,14 @@ import GoogleMapReact, { Coords } from "google-map-react";
 interface MapProps {
   coordinates: Coords;
   setCoordinates: React.Dispatch<React.SetStateAction<Coords>>;
+  setBounds: React.Dispatch<React.SetStateAction<{ sw?: Coords; ne?: Coords }>>;
 }
 
-const Map: React.FC<MapProps> = ({ coordinates, setCoordinates }) => {
+const Map: React.FC<MapProps> = ({
+  coordinates,
+  setCoordinates,
+  setBounds,
+}) => {
   return (
     <Box width="full" height="full">
       <GoogleMapReact
@@ -17,11 +22,14 @@ const Map: React.FC<MapProps> = ({ coordinates, setCoordinates }) => {
         center={coordinates}
         margin={[50, 50, 50, 50]}
         options={{}}
-        onChange={() => {}}
-        onChildClick={() => {}}
-        
-      >
-      </GoogleMapReact>
+        onChange={(e) => {
+   setCoordinates({ lat: e.center.lat, lng: e.center.lng });
+   setBounds({ ne: e.marginBounds.ne, sw: e.marginBounds.sw });
+        }}
+        onChildClick={() => {
+          
+        }}
+      ></GoogleMapReact>
     </Box>
   );
 };
