@@ -1,28 +1,42 @@
-"use client"
+"use client";
 
-
-import { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Header from "@/components/Header";
-import List from "@/components/List";
 import Map from "@/components/Map";
-import PlaceDetail from "@/components/PlaceDetail";
+import List from "@/components/List"; // List bileşeninin doğru şekilde içeri aktarıldığından emin olun
 import { Flex } from "@chakra-ui/react";
+
+const places: Place[] = [
+  { name: "özkan" },
+  { name: "özkan" },
+  { name: "özkan" },
+  { name: "özkan" },
+  { name: "özkan" },
+];
+interface Place {
+  name: string;
+}
 
 interface Coordinates {
   lat: number;
   lng: number;
 }
-interface MapProps {
-  coordinates: Coordinates;
-  setCoordinates: React.Dispatch<React.SetStateAction<Coordinates>>;
-}
 
+const Home: React.FC = () => {
+  const [coordinates, setCoordinates] = useState<Coordinates>({});
+  const [ratings, setRatings] = useState<string>("");
+  const [Type, setType] = useState<string>(""); // Type değişkeninin türünü belirtmek önemlidir
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  useEffect(() => {
+    // get the users current location on intial login
 
-export default function Home() {
-  const [coordinates, setCoordinates] = useState<Coordinates>({
-    lat: 0,
-    lng: 0,
-  });
+    navigator.geolocation.getCurrentPosition(
+      ({ coords: { latitude, longitude } }) => {
+        console.log({ latitude, longitude });
+        setCoordinates({ lat: latitude, lng: longitude });
+      }
+    );
+  }, []);
 
   return (
     <Flex
@@ -34,10 +48,16 @@ export default function Home() {
       maxHeight={"100vh"}
       position={"relative"}
     >
-      {/* <Header /> */}
+      <Header
+        setType={setType}
+        setRatings={setRatings}
+        setCoordinates={setCoordinates}
+      />
 
-      {/* <List /> */}
+      <List places={places} isLoading={isLoading} />
       <Map coordinates={coordinates} setCoordinates={setCoordinates} />
     </Flex>
   );
-}
+};
+
+export default Home;

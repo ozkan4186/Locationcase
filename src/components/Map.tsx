@@ -11,7 +11,7 @@ const Map: React.FC<MapProps> = ({ coordinates, setCoordinates }) => {
   return (
     <Box width="full" height="full">
       <GoogleMapReact
-        bootstrapURLKeys={{}}
+        // bootstrapURLKeys={{}}
         defaultCenter={coordinates}
         defaultZoom={10}
         center={coordinates}
@@ -19,8 +19,8 @@ const Map: React.FC<MapProps> = ({ coordinates, setCoordinates }) => {
         options={{}}
         onChange={() => {}}
         onChildClick={() => {}}
+        
       >
-        {/* Harita içeriği buraya gelecek */}
       </GoogleMapReact>
     </Box>
   );
